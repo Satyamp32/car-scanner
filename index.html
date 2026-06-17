@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🚗 Contact Vehicle Owner</title>
+    <!-- SEO Optimization -->
+    <meta name="description" content="Quickly contact the owner of this vehicle in case of a parking issue, emergency, or lights left on.">
+    <meta name="theme-color" content="#0f172a">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-glow"></div>
+    <div class="app-container">
+        <!-- Main Card -->
+        <main class="card">
+            <!-- Header Profile Section -->
+            <header class="profile-section">
+                <div class="avatar-container">
+                    <div class="pulse-ring"></div>
+                    <div class="avatar-icon">
+                        <!-- Custom SVG Car Icon -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+                            <circle cx="7" cy="17" r="2" />
+                            <circle cx="17" cy="17" r="2" />
+                            <path d="M13 17H9" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="owner-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Masked & Secure</span>
+                </div>
+                <h1 id="owner-title" class="owner-name">Satyam Kumar Pandey</h1>
+                <p class="subtitle">If this vehicle is causing inconvenience or there is an emergency, send a secure alert to the owner below.</p>
+            </header>
+
+            <hr class="divider">
+
+            <!-- Step 1: Select Scenario -->
+            <section class="alert-scenario-section">
+                <h2 class="section-title">1. Select Issue</h2>
+                <div class="actions-grid">
+                    <button class="btn-action active-action" data-type="Blocking Access" data-message="Hello, please move your vehicle. It is currently blocking access.">
+                        <span class="action-icon">🚗</span>
+                        <div class="action-details">
+                            <span class="action-title">Blocking Access</span>
+                            <span class="action-desc">Request vehicle movement</span>
+                        </div>
+                    </button>
+
+                    <button class="btn-action" data-type="Lights Left ON" data-message="Hello, your vehicle lights appear to be ON. Just wanted to alert you to save your battery!">
+                        <span class="action-icon">💡</span>
+                        <div class="action-details">
+                            <span class="action-title">Lights Left ON</span>
+                            <span class="action-desc">Save vehicle battery</span>
+                        </div>
+                    </button>
+
+                    <button class="btn-action" data-type="Parking Issue" data-message="Hello, there is a parking issue with your vehicle. Please check.">
+                        <span class="action-icon">🅿️</span>
+                        <div class="action-details">
+                            <span class="action-title">Parking Issue</span>
+                            <span class="action-desc">Incorrectly parked vehicle</span>
+                        </div>
+                    </button>
+
+                    <button class="btn-action" data-type="Emergency" data-message="Please contact me regarding an urgent issue with your vehicle.">
+                        <span class="action-icon">🚨</span>
+                        <div class="action-details">
+                            <span class="action-title">Emergency</span>
+                            <span class="action-desc">Urgent vehicle alert</span>
+                        </div>
+                    </button>
+                    
+                    <button class="btn-action" id="btn-scenario-custom" data-type="Custom Message" data-message="">
+                        <span class="action-icon">📝</span>
+                        <div class="action-details">
+                            <span class="action-title">Custom / Other</span>
+                            <span class="action-desc">Type your own message below</span>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Custom Message Box (Shown when Custom scenario is active) -->
+            <section class="custom-message-section hide" id="custom-text-section">
+                <div class="textarea-wrapper">
+                    <textarea id="custom-message-txt" placeholder="Type a custom message to the owner..." rows="3" maxlength="250"></textarea>
+                    <span class="char-counter"><span id="char-count">0</span>/250</span>
+                </div>
+            </section>
+
+            <!-- Step 2: Callback Details & Location -->
+            <section class="callback-section">
+                <h2 class="section-title">2. Your Contact & Location</h2>
+                
+                <div class="input-wrapper">
+                    <label for="callback-phone-txt" class="input-label">Callback Phone Number (Optional)</label>
+                    <div class="tel-input-container">
+                        <span class="tel-prefix">+91</span>
+                        <input type="tel" id="callback-phone-txt" placeholder="Enter your 10-digit number" maxlength="10">
+                    </div>
+                </div>
+
+                <div class="location-toggle-container">
+                    <label class="switch-label">
+                        <div class="switch-wrapper">
+                            <input type="checkbox" id="share-location-chk">
+                            <span class="slider"></span>
+                        </div>
+                        <span class="switch-text">
+                            <strong>Share My Location</strong>
+                            <span class="switch-sub">Helps owner locate the vehicle issues</span>
+                        </span>
+                    </label>
+                    <div id="location-status" class="location-status-badge hide">
+                        <span class="spinner"></span>
+                        <span id="location-text">Acquiring GPS...</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Submit Button -->
+            <button class="btn btn-submit" id="btn-submit-alert" aria-label="Send Secure Alert">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="btn-icon">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+                <span>Send Secure Alert</span>
+            </button>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Vehicle Owner Contact System &copy; 2026</p>
+            <p class="footer-secure">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                100% Secure Number Masking Active
+            </p>
+        </footer>
+    </div>
+
+    <!-- Notification Toast Modal -->
+    <div id="status-modal" class="status-modal-overlay hide">
+        <div class="status-modal-card">
+            <div id="status-spinner" class="spinner large-spinner"></div>
+            <div id="status-success-icon" class="status-icon success-icon hide">✓</div>
+            <div id="status-error-icon" class="status-icon error-icon hide">✗</div>
+            <h3 id="status-title" class="status-title">Sending Alert...</h3>
+            <p id="status-desc" class="status-desc">Forwarding your alert details securely to the owner.</p>
+            <button id="btn-status-close" class="btn btn-close hide">Close</button>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        const shareLocationChk = document.getElementById('share-location-chk');
+        const locationStatus = document.getElementById('location-status');
+        const locationText = document.getElementById('location-text');
+        const customMessageTxt = document.getElementById('custom-message-txt');
+        const charCount = document.getElementById('char-count');
+        const customTextSection = document.getElementById('custom-text-section');
+        const callbackPhoneTxt = document.getElementById('callback-phone-txt');
+        const btnSubmitAlert = document.getElementById('btn-submit-alert');
+        const btnScenarioCustom = document.getElementById('btn-scenario-custom');
+
+        // Modal Elements
+        const statusModal = document.getElementById('status-modal');
+        const statusSpinner = document.getElementById('status-spinner');
+        const statusSuccessIcon = document.getElementById('status-success-icon');
+        const statusErrorIcon = document.getElementById('status-error-icon');
+        const statusTitle = document.getElementById('status-title');
+        const statusDesc = document.getElementById('status-desc');
+        const btnStatusClose = document.getElementById('btn-status-close');
+
+        let userCoords = null;
+        let activeScenarioType = "Blocking Access";
+        let activeScenarioMessage = "Hello, please move your vehicle. It is currently blocking access.";
+
+        // Handle Alert Scenario Selection
+        document.querySelectorAll('.btn-action').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active styling from all buttons
+                document.querySelectorAll('.btn-action').forEach(btn => btn.classList.remove('active-action'));
+                
+                // Add active styling to clicked button
+                button.classList.add('active-action');
+                
+                activeScenarioType = button.getAttribute('data-type');
+                activeScenarioMessage = button.getAttribute('data-message');
+
+                // If Custom/Other is selected, show textarea
+                if (button === btnScenarioCustom) {
+                    customTextSection.classList.remove('hide');
+                    customMessageTxt.focus();
+                } else {
+                    customTextSection.classList.add('hide');
+                }
+            });
+        });
+
+        // Custom Message Characters Counter
+        customMessageTxt.addEventListener('input', () => {
+            const length = customMessageTxt.value.length;
+            charCount.textContent = length;
+            activeScenarioMessage = customMessageTxt.value;
+        });
+
+        // Geolocation Logic
+        shareLocationChk.addEventListener('change', () => {
+            if (shareLocationChk.checked) {
+                locationStatus.classList.remove('hide');
+                locationText.textContent = "Acquiring GPS...";
+                
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            userCoords = {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude
+                            };
+                            locationStatus.classList.add('hide');
+                        },
+                        (error) => {
+                            console.error("Geolocation error:", error);
+                            let errorMsg = "Location access denied.";
+                            if (error.code === error.PERMISSION_DENIED) {
+                                errorMsg = "Please allow location access.";
+                            } else if (error.code === error.POSITION_UNAVAILABLE) {
+                                errorMsg = "Location unavailable.";
+                            } else if (error.code === error.TIMEOUT) {
+                                errorMsg = "Request timed out.";
+                            }
+                            locationText.textContent = errorMsg;
+                            shareLocationChk.checked = false;
+                            userCoords = null;
+                            setTimeout(() => {
+                                if (!shareLocationChk.checked) {
+                                    locationStatus.classList.add('hide');
+                                }
+                            }, 3000);
+                        },
+                        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+                    );
+                } else {
+                    locationText.textContent = "GPS not supported by browser.";
+                    shareLocationChk.checked = false;
+                    userCoords = null;
+                    setTimeout(() => locationStatus.classList.add('hide'), 3000);
+                }
+            } else {
+                userCoords = null;
+                locationStatus.classList.add('hide');
+            }
+        });
+
+        // Submit Alert logic
+        btnSubmitAlert.addEventListener('click', async () => {
+            // Validate Callback Number if entered
+            let callbackNum = callbackPhoneTxt.value.trim();
+            if (callbackNum.length > 0) {
+                // Ensure exactly 10 digits
+                const digits = callbackNum.replace(/\D/g, '');
+                if (digits.length !== 10) {
+                    alert("Please enter a valid 10-digit mobile number.");
+                    callbackPhoneTxt.focus();
+                    return;
+                }
+                callbackNum = "+91" + digits;
+            } else {
+                callbackNum = null;
+            }
+
+            // Get custom message text if custom scenario is selected
+            let finalMessage = activeScenarioMessage;
+            if (activeScenarioType === "Custom Message") {
+                finalMessage = customMessageTxt.value.trim();
+                if (finalMessage.length === 0) {
+                    alert("Please type a message before submitting.");
+                    customMessageTxt.focus();
+                    return;
+                }
+            }
+
+            // Show Loading Modal
+            showModal("Loading");
+
+            try {
+                // Call Vercel Serverless Function
+                const response = await fetch('/api/send-message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: activeScenarioType,
+                        message: finalMessage,
+                        location: userCoords,
+                        callbackPhone: callbackNum
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showModal("Success");
+                } else {
+                    console.error("Server returned error:", data);
+                    showModal("Error", data.error || "Could not deliver the message.");
+                }
+            } catch (err) {
+                console.error("Network error:", err);
+                showModal("Error", "Network error. Please check your internet connection.");
+            }
+        });
+
+        // Modal Display Manager
+        function showModal(state, errDetail = "") {
+            statusModal.classList.remove('hide');
+            
+            // Default states
+            statusSpinner.classList.add('hide');
+            statusSuccessIcon.classList.add('hide');
+            statusErrorIcon.classList.add('hide');
+            btnStatusClose.classList.add('hide');
+
+            if (state === "Loading") {
+                statusSpinner.classList.remove('hide');
+                statusTitle.textContent = "Sending Secure Alert...";
+                statusDesc.textContent = "Alerting the vehicle owner. Do not close this page.";
+            } 
+            else if (state === "Success") {
+                statusSuccessIcon.classList.remove('hide');
+                statusTitle.textContent = "Alert Sent!";
+                statusDesc.textContent = "Your notification has been securely delivered to the owner's phone. Thank you for your alert.";
+                btnStatusClose.classList.remove('hide');
+            } 
+            else if (state === "Error") {
+                statusErrorIcon.classList.remove('hide');
+                statusTitle.textContent = "Delivery Failed";
+                statusDesc.textContent = errDetail || "Something went wrong. Please check your network and try again.";
+                btnStatusClose.classList.remove('hide');
+            }
+        }
+
+        btnStatusClose.addEventListener('click', () => {
+            statusModal.classList.add('hide');
+        });
+    </script>
+</body>
+</html>
