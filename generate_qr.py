@@ -16,9 +16,14 @@ def check_dependencies():
             subprocess.check_call([sys.executable, "-m", "pip", "install", "qrcode", "pillow"])
             print("Libraries installed successfully!")
         except Exception as e:
-            print(f"Error installing dependencies: {e}")
-            print("Please run manually: pip install qrcode pillow")
-            sys.exit(1)
+            try:
+                print("Standard pip install failed. Attempting with --break-system-packages...")
+                subprocess.check_call([sys.executable, "-m", "pip", "install", "qrcode", "pillow", "--break-system-packages"])
+                print("Libraries installed successfully with system overrides!")
+            except Exception as ex:
+                print(f"Error installing dependencies: {ex}")
+                print("Please run manually: pip install qrcode pillow")
+                sys.exit(1)
 
 # Check and install deps
 check_dependencies()
